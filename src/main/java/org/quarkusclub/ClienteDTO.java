@@ -12,6 +12,7 @@ public class ClienteDTO {
     @Setter
     private String responseMessage;
     private String nome;
+    private String cpf;
     private String email;
     private String telefone;
     private String endereco;

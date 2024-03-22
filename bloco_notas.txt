@@ -1,0 +1,33 @@
+{
+    "nome": "Luiz Pais",
+    "cpf": "12345678900",
+    "email": "luizpais@outlook.com",
+    "telefone": "1199229933",
+    "endereco": "Rua 1, 99",
+    "cidade": "São Paulo",
+    "estado": "SP",
+    "nomePlano": "Boa Saude",
+    "indicacao": "José Maria"
+}
+{
+    "nome": "Gabriel MArques",
+    "cpf": "10611199992"
+    "email": "GabrielMarques@outlook.com",
+    "telefone": "1199234324",
+    "endereco": "Rua 2, 99",
+    "cidade": "São Paulo",
+    "estado": "SP",
+    "nomePlano": "Boa Saude",
+    "indicacao": "Paulo"
+}
+{
+    "nome": "Paulo Silva",
+    "cpf": "11902099911"
+    "email": "paulosilva@gmail.com"
+    "telefone": "1199234324",
+    "endereco": "Rua 3, 699",
+    "cidade": "Osasco",
+    "estado": "SP",
+    "nomePlano": "Boa Saude",
+    "indicacao": "Maria"
+}
