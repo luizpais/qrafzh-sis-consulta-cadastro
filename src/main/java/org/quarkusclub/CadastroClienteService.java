@@ -9,20 +9,22 @@ import java.util.List;
 import java.util.UUID;
 
 @ApplicationScoped
-public class CadastroClienteService {
+public class CadastroClienteService implements CadastroClienteServiceInterface {
 
     //Nossa persistência em memória
     private List<ClienteDTO> clientes = new ArrayList<>();
 
+    @Override
     public ClienteDTO createCliente(ClienteDTO cliente) {
         cliente.setId(UUID.randomUUID());
         clientes.add(cliente);
         return cliente;
     }
 
-    public ClienteDTO updateAllCliente(ClienteDTO cliente) {
+    @Override
+    public ClienteDTO updateAllCliente(UUID idcliente, ClienteDTO cliente) throws ClienteNaoCadastradoException {
         for (ClienteDTO c : clientes) {
-            if(c.getId().equals(cliente.getId())) {
+            if(c.getId().equals(idcliente)) {
                 c.setNome(cliente.getNome());
                 c.setCpf(cliente.getCpf());
                 c.setEndereco(cliente.getEndereco());
@@ -35,10 +37,11 @@ public class CadastroClienteService {
                 return c;
             }
         }
-        return null;
+        throw new ClienteNaoCadastradoException("Cliente não encontrado");
     }
 
-    public ClienteDTO updateParcialCliente(UUID idcliente, ClienteDTO cliente) {
+    @Override
+    public ClienteDTO updateParcialCliente(UUID idcliente, ClienteDTO cliente) throws ClienteNaoCadastradoException {
         for (ClienteDTO c : clientes) {
             if(c.getId().equals(idcliente)) {
                 if(cliente.getNome() != null) {
@@ -71,10 +74,14 @@ public class CadastroClienteService {
                 return c;
             }
         }
-        return null;
+        throw new ClienteNaoCadastradoException("Cliente não encontrado");
     }
 
+    @Override
     public List<ClienteDTO> consultaClientes() {
+        if(clientes == null) {
+            throw new RuntimeException("Banco de dados não inicializado");
+        }
         return clientes;
     }
 }
