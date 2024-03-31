@@ -14,4 +14,6 @@ public interface CadastroClienteServiceInterface {
     ClienteDTO updateParcialCliente(UUID idcliente, ClienteDTO cliente) throws ClienteNaoCadastradoException;
 
     List<ClienteDTO> consultaClientes();
+
+    ClienteDTO consultaCliente(UUID idcliente) throws ClienteNaoCadastradoException;
 }

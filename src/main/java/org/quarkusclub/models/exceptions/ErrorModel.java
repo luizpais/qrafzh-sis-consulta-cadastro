@@ -1,4 +1,4 @@
-package org.quarkusclub.models;
+package org.quarkusclub.models.exceptions;
 
 import jakarta.ws.rs.core.Response;
 import lombok.Data;

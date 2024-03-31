@@ -5,7 +5,6 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 import org.jboss.logging.Logger;
-import org.quarkusclub.models.ErrorModel;
 
 @Provider
 public class SisConsultaGlobalExceptionHandler implements ExceptionMapper<SisConsultaException> {

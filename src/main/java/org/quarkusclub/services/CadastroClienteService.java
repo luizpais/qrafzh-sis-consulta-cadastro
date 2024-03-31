@@ -1,8 +1,12 @@
 package org.quarkusclub.services;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.quarkusclub.dtos.ClienteDTO;
+import org.quarkusclub.models.ClienteEntity;
 import org.quarkusclub.models.exceptions.ClienteNaoCadastradoException;
+import org.quarkusclub.repositories.CadastroClienteRepository;
+import org.quarkusclub.utils.mappers.ClienteMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,77 +15,86 @@ import java.util.UUID;
 @ApplicationScoped
 public class CadastroClienteService implements CadastroClienteServiceInterface {
 
-    //Nossa persistência em memória
-    private List<ClienteDTO> clientes = null; //new ArrayList<>();
+    @Inject
+    private CadastroClienteRepository cadastroClienteRepository;
 
     @Override
     public ClienteDTO createCliente(ClienteDTO cliente) {
-        cliente.setId(UUID.randomUUID());
-        clientes.add(cliente);
+        ClienteEntity newCliente = ClienteMapper.mapDtoToEntity(cliente);
+        cadastroClienteRepository.createCliente(newCliente);
         return cliente;
     }
 
     @Override
     public ClienteDTO updateAllCliente(UUID idcliente, ClienteDTO cliente) throws ClienteNaoCadastradoException {
-        for (ClienteDTO c : clientes) {
-            if(c.getId().equals(idcliente)) {
-                c.setNome(cliente.getNome());
-                c.setCpf(cliente.getCpf());
-                c.setEndereco(cliente.getEndereco());
-                c.setCidade(cliente.getCidade());
-                c.setEstado(cliente.getEstado());
-                c.setEmail(cliente.getEmail());
-                c.setTelefone(cliente.getTelefone());
-                c.setNomePlano(cliente.getNomePlano());
-                c.setIndicacao(cliente.getIndicacao());
-                return c;
-            }
+
+        ClienteEntity clienteEntity = cadastroClienteRepository.consultaCliente(idcliente);
+        if(clienteEntity != null){
+            cadastroClienteRepository.updateCliente(ClienteMapper.mapDtoToEntity(cliente));
+            return cliente;
+        } else {
+            throw new ClienteNaoCadastradoException("Cliente não encontrado");
         }
-        throw new ClienteNaoCadastradoException("Cliente não encontrado");
+
     }
 
     @Override
     public ClienteDTO updateParcialCliente(UUID idcliente, ClienteDTO cliente) throws ClienteNaoCadastradoException {
-        for (ClienteDTO c : clientes) {
-            if(c.getId().equals(idcliente)) {
-                if(cliente.getNome() != null) {
-                    c.setNome(cliente.getNome());
-                }
-                if(cliente.getCpf() != null) {
-                    c.setCpf(cliente.getCpf());
-                }
-                if(cliente.getEndereco() != null) {
-                    c.setEndereco(cliente.getEndereco());
-                }
-                if(cliente.getCidade() != null) {
-                    c.setCidade(cliente.getCidade());
-                }
-                if(cliente.getEstado() != null) {
-                    c.setEstado(cliente.getEstado());
-                }
-                if(cliente.getEmail() != null) {
-                    c.setEmail(cliente.getEmail());
-                }
-                if(cliente.getTelefone() != null) {
-                    c.setTelefone(cliente.getTelefone());
-                }
-                if(cliente.getNomePlano() != null) {
-                    c.setNomePlano(cliente.getNomePlano());
-                }
-                if(cliente.getIndicacao() != null) {
-                    c.setIndicacao(cliente.getIndicacao());
-                }
-                return c;
-            }
+        ClienteEntity clienteEntity = cadastroClienteRepository.consultaCliente(idcliente);
+
+        if (clienteEntity == null) {
+            throw new ClienteNaoCadastradoException("Cliente não encontrado");
         }
-        throw new ClienteNaoCadastradoException("Cliente não encontrado");
+
+        if (cliente.nome() != null) {
+            clienteEntity.setNome(cliente.nome());
+        }
+        if (cliente.cpf() != null) {
+            clienteEntity.setCpf(cliente.cpf());
+        }
+        if (cliente.endereco() != null) {
+            clienteEntity.setEndereco(cliente.endereco());
+        }
+        if (cliente.cidade() != null) {
+            clienteEntity.setCidade(cliente.cidade());
+        }
+        if (cliente.estado() != null) {
+            clienteEntity.setEstado(cliente.estado());
+        }
+        if (cliente.email() != null) {
+            clienteEntity.setEmail(cliente.email());
+        }
+        if (cliente.telefone() != null) {
+            clienteEntity.setTelefone(cliente.telefone());
+        }
+        if (cliente.nomePlano() != null) {
+            clienteEntity.setNomePlano(cliente.nomePlano());
+        }
+        if (cliente.indicacao() != null) {
+            clienteEntity.setIndicacao(cliente.indicacao());
+        }
+
+        cadastroClienteRepository.updateCliente(clienteEntity);
+
+        return ClienteMapper.mapEntityToDto(clienteEntity);
+
     }
 
     @Override
     public List<ClienteDTO> consultaClientes() {
-        if(clientes == null) {
-            throw new RuntimeException("Banco de dados não inicializado");
+        List<ClienteEntity> clientes = cadastroClienteRepository.consultaClientes();
+        if (clientes == null) {
+            throw new RuntimeException("Nenhum cliente encontrado.");
         }
-        return clientes;
+        return ClienteMapper.mapEntityListToDtoList(clientes);
+    }
+
+    @Override
+    public ClienteDTO consultaCliente(UUID idcliente) throws ClienteNaoCadastradoException {
+        ClienteEntity clienteEntity = cadastroClienteRepository.consultaCliente(idcliente);
+        if (clienteEntity != null) {
+            return ClienteMapper.mapEntityToDto(clienteEntity);
+        }
+        throw new ClienteNaoCadastradoException("Cliente não encontrado");
     }
 }

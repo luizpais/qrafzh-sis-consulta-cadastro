@@ -7,7 +7,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.quarkusclub.dtos.ClienteDTO;
+import org.quarkusclub.models.ClienteEntity;
 import org.quarkusclub.models.exceptions.ClienteNaoCadastradoException;
+import org.quarkusclub.repositories.CadastroClienteRepository;
 import org.quarkusclub.services.CadastroClienteService;
 
 
@@ -23,37 +25,92 @@ class CadastroClienteServiceTest {
     @InjectMocks
     CadastroClienteService cadastroClienteService;
 
+    @Mock
+    CadastroClienteRepository cadastroClienteRepository;
+    ClienteDTO clienteDTO = null;
+
+    ClienteEntity clienteEntity = null;
+
+    UUID id = UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c");
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
+        clienteEntity = new ClienteEntity(
+                UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c"),
+                "nome",
+                "cpf",
+                "email",
+                "telefone",
+                "endereco",
+                "cidade",
+                "estado",
+                "nomePlano",
+                "indicacao"
+        );
+
+        clienteDTO = new ClienteDTO(
+                UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c"),
+                "nome",
+                "cpf",
+                "email",
+                "telefone",
+                "endereco",
+                "cidade",
+                "estado",
+                "nomePlano",
+                "indicacao"
+        );
     }
 
     @Test
     void testCreateCliente() {
         when(clientes.add(any())).thenReturn(true);
 
-        ClienteDTO novoCliente = new ClienteDTO();
+        ClienteDTO novoCliente = clienteDTO;
         ClienteDTO result = cadastroClienteService.createCliente(novoCliente);
-        Assertions.assertEquals(novoCliente, result);
+        Assertions.assertTrue(CompareDtoAndEntity(result, clienteEntity));
     }
 
     @Test
     void testUpdateAllCliente() throws ClienteNaoCadastradoException {
-        ClienteDTO result = cadastroClienteService.updateAllCliente(new UUID(0L, 0L), new ClienteDTO());
-        Assertions.assertEquals(new ClienteDTO(), result);
+        when(cadastroClienteRepository.consultaCliente(any())).thenReturn(clienteEntity);
+        ClienteDTO result = cadastroClienteService.updateAllCliente(id, clienteDTO);
+        Assertions.assertTrue(CompareDtoAndEntity(result, clienteEntity));
     }
 
     @Test
     void testUpdateParcialCliente() throws ClienteNaoCadastradoException {
-        ClienteDTO result = cadastroClienteService.updateParcialCliente(new UUID(0L, 0L), new ClienteDTO());
-        Assertions.assertEquals(new ClienteDTO(), result);
+        when(cadastroClienteRepository.consultaCliente(any())).thenReturn(clienteEntity);
+        ClienteDTO result = cadastroClienteService.updateParcialCliente(id, clienteDTO);
+        Assertions.assertTrue(CompareDtoAndEntity(result, clienteEntity));
     }
 
     @Test
     void testConsultaClientes() {
+        when(cadastroClienteRepository.consultaClientes()).thenReturn(List.of(clienteEntity));
         List<ClienteDTO> result = cadastroClienteService.consultaClientes();
-        Assertions.assertEquals(List.of(new ClienteDTO()), result);
+        Assertions.assertTrue(CompareDtoAndEntity(result.get(0), clienteEntity));
+    }
+
+    @Test
+    void testConsultaCliente() throws ClienteNaoCadastradoException {
+        when(cadastroClienteRepository.consultaCliente(any())).thenReturn(clienteEntity);
+        ClienteDTO result = cadastroClienteService.consultaCliente(id);
+        Assertions.assertTrue(CompareDtoAndEntity(result, clienteEntity));
+    }
+
+    boolean CompareDtoAndEntity(ClienteDTO dto, ClienteEntity entity) {
+        return dto.id().equals(entity.getId()) &&
+                dto.nome().equals(entity.getNome()) &&
+                dto.cpf().equals(entity.getCpf()) &&
+                dto.email().equals(entity.getEmail()) &&
+                dto.telefone().equals(entity.getTelefone()) &&
+                dto.endereco().equals(entity.getEndereco()) &&
+                dto.cidade().equals(entity.getCidade()) &&
+                dto.estado().equals(entity.getEstado()) &&
+                dto.nomePlano().equals(entity.getNomePlano()) &&
+                dto.indicacao().equals(entity.getIndicacao());
     }
 }
 

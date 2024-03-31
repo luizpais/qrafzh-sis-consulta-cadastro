@@ -35,6 +35,14 @@ public class CadastroClienteResource {
 
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{idcliente}")
+    public RestResponse<ClienteDTO> consultaCliente(@PathParam("idcliente") UUID idcliente) throws ClienteNaoCadastradoException {
+        ClienteDTO cliente = cadastroClienteService.consultaCliente(idcliente);
+        return RestResponse.status(Response.Status.OK, cliente);
+    }
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
