@@ -27,40 +27,37 @@ class CadastroClienteServiceTest {
 
     @Mock
     CadastroClienteRepository cadastroClienteRepository;
-    ClienteDTO clienteDTO = null;
+    ClienteDTO clienteDTO = new ClienteDTO(
+            UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c"),
+            "nome",
+            "cpf",
+            "email",
+            "telefone",
+            "endereco",
+            "cidade",
+            "estado",
+            "nomePlano",
+            "indicacao"
+    );
 
-    ClienteEntity clienteEntity = null;
+    ClienteEntity clienteEntity = clienteEntity = new ClienteEntity(
+            UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c"),
+            "nome",
+            "cpf",
+            "email",
+            "telefone",
+            "endereco",
+            "cidade",
+            "estado",
+            "nomePlano",
+            "indicacao"
+    );
 
     UUID id = UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c");
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        clienteEntity = new ClienteEntity(
-                UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c"),
-                "nome",
-                "cpf",
-                "email",
-                "telefone",
-                "endereco",
-                "cidade",
-                "estado",
-                "nomePlano",
-                "indicacao"
-        );
-
-        clienteDTO = new ClienteDTO(
-                UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c"),
-                "nome",
-                "cpf",
-                "email",
-                "telefone",
-                "endereco",
-                "cidade",
-                "estado",
-                "nomePlano",
-                "indicacao"
-        );
     }
 
     @Test
