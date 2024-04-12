@@ -1,6 +1,9 @@
 package org.quarkusclub.repositories;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import org.quarkusclub.dtos.ClienteDTO;
 import org.quarkusclub.models.ClienteEntity;
 import org.quarkusclub.models.exceptions.ClienteNaoCadastradoException;
@@ -12,35 +15,29 @@ import java.util.UUID;
 @ApplicationScoped
 public class CadastroClienteRepository {
 
-    //Nossa persistência em memória
-    private List<ClienteEntity> clientes = new ArrayList<>();
+    @Inject
+    EntityManager entityManager;
 
+    @Transactional
     public ClienteEntity createCliente(ClienteEntity cliente){
         cliente.setId(UUID.randomUUID());
-        clientes.add(cliente);
+        cliente.persist();
         return cliente;
     }
 
+    @Transactional
     public ClienteEntity updateCliente(ClienteEntity cliente) {
-        clientes.stream().findFirst().filter(c -> c.getId().equals(cliente.getId())).ifPresent(c -> {
-            c.setNome(cliente.getNome());
-            c.setCpf(cliente.getCpf());
-            c.setEndereco(cliente.getEndereco());
-            c.setCidade(cliente.getCidade());
-            c.setEstado(cliente.getEstado());
-            c.setEmail(cliente.getEmail());
-            c.setTelefone(cliente.getTelefone());
-            c.setNomePlano(cliente.getNomePlano());
-            c.setIndicacao(cliente.getIndicacao());
-        });
+        ClienteEntity clienteEntity = ClienteEntity.findById(cliente.getId());
+        if(clienteEntity == null) return null;
+        entityManager.merge(cliente);
         return cliente;
     }
 
     public List<ClienteEntity> consultaClientes(){
-        return clientes;
+        return ClienteEntity.listAll();
     }
 
     public ClienteEntity consultaCliente(UUID idcliente) {
-        return clientes.stream().filter(c -> c.getId().equals(idcliente)).findFirst().orElse(null);
+        return ClienteEntity.findById(idcliente);
     }
 }

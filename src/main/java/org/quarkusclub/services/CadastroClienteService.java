@@ -22,7 +22,7 @@ public class CadastroClienteService implements CadastroClienteServiceInterface {
     public ClienteDTO createCliente(ClienteDTO cliente) {
         ClienteEntity newCliente = ClienteMapper.mapDtoToEntity(cliente);
         cadastroClienteRepository.createCliente(newCliente);
-        return cliente;
+        return ClienteMapper.mapEntityToDto(newCliente);
     }
 
     @Override
