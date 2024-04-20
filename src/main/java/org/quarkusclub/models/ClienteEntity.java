@@ -1,6 +1,7 @@
 package org.quarkusclub.models;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -27,5 +28,9 @@ public class ClienteEntity extends PanacheEntityBase {
     private String estado;
     private String nomePlano;
     private String indicacao;
+    @Column(name = "id_convenio")
+    private UUID idConvenio;
+    @Column (name = "id_conveniado")
+    private UUID idConveniado;
 
 }

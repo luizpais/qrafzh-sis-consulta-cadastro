@@ -18,21 +18,25 @@ public class ClienteMapper {
         entity.setEstado(dto.estado());
         entity.setNomePlano(dto.nomePlano());
         entity.setIndicacao(dto.indicacao());
+        entity.setIdConvenio(dto.idConvenio());
+        entity.setIdConveniado(dto.idConveniado());
         return entity;
     }
 
     public static ClienteDTO mapEntityToDto(ClienteEntity entity) {
         return new ClienteDTO(
-            entity.getId(),
-            entity.getNome(),
-            entity.getCpf(),
-            entity.getEmail(),
-            entity.getTelefone(),
-            entity.getEndereco(),
-            entity.getCidade(),
-            entity.getEstado(),
-            entity.getNomePlano(),
-            entity.getIndicacao()
+                entity.getId(),
+                entity.getNome(),
+                entity.getCpf(),
+                entity.getEmail(),
+                entity.getTelefone(),
+                entity.getEndereco(),
+                entity.getCidade(),
+                entity.getEstado(),
+                entity.getNomePlano(),
+                entity.getIndicacao(),
+                entity.getIdConvenio(),
+                entity.getIdConveniado()
         );
     }
 
