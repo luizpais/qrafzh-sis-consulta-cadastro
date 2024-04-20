@@ -37,7 +37,10 @@ class CadastroClienteServiceTest {
             "cidade",
             "estado",
             "nomePlano",
-            "indicacao"
+            "indicacao",
+            UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c"),
+            UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c")
+
     );
 
     ClienteEntity clienteEntity = clienteEntity = new ClienteEntity(
@@ -50,7 +53,9 @@ class CadastroClienteServiceTest {
             "cidade",
             "estado",
             "nomePlano",
-            "indicacao"
+            "jose",
+            UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c"),
+            UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c")
     );
 
     UUID id = UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c");
@@ -107,7 +112,9 @@ class CadastroClienteServiceTest {
                 dto.cidade().equals(entity.getCidade()) &&
                 dto.estado().equals(entity.getEstado()) &&
                 dto.nomePlano().equals(entity.getNomePlano()) &&
-                dto.indicacao().equals(entity.getIndicacao());
+                dto.indicacao().equals(entity.getIndicacao()) &&
+                dto.idConvenio().equals(entity.getIdConvenio()) &&
+                dto.idConveniado().equals(entity.getIdConveniado());
     }
 }
 

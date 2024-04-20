@@ -3,12 +3,13 @@ package org.quarkusclub.services;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.quarkusclub.dtos.ClienteDTO;
+import org.quarkusclub.dtos.ClienteStatusResponse;
 import org.quarkusclub.models.ClienteEntity;
 import org.quarkusclub.models.exceptions.ClienteNaoCadastradoException;
 import org.quarkusclub.repositories.CadastroClienteRepository;
+import org.quarkusclub.repositories.ConveniosRepository;
 import org.quarkusclub.utils.mappers.ClienteMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,9 +19,23 @@ public class CadastroClienteService implements CadastroClienteServiceInterface {
     @Inject
     private CadastroClienteRepository cadastroClienteRepository;
 
+    @Inject
+    private ConveniosRepository convenioRepository;
+
     @Override
     public ClienteDTO createCliente(ClienteDTO cliente) {
+        ClienteStatusResponse conveniado = null;
+        try {
+           conveniado = convenioRepository.getStatusConveniado(cliente.idConveniado());
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao criar cliente.");
+        }
+        if(conveniado == null || conveniado.status() == false){
+            throw new RuntimeException("Conveniado não está ativo ou não existe no convenio.");
+        }
         ClienteEntity newCliente = ClienteMapper.mapDtoToEntity(cliente);
+        newCliente.setIdConvenio(conveniado.idConvenio());
+        newCliente.setIdConveniado(cliente.idConveniado());
         cadastroClienteRepository.createCliente(newCliente);
         return ClienteMapper.mapEntityToDto(newCliente);
     }

@@ -12,5 +12,7 @@ public record ClienteDTO(
         String cidade,
         String estado,
         String nomePlano,
-        String indicacao
+        String indicacao,
+        UUID idConvenio,
+        UUID idConveniado
 ) {}
