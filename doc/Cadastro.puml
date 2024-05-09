@@ -1,0 +1,31 @@
+@startuml
+actor User
+participant CadastroClienteResource
+participant CadastroClienteServiceInterface
+participant ClienteDTO
+
+User -> CadastroClienteResource: consultaClientes()
+CadastroClienteResource -> CadastroClienteServiceInterface: consultaClientes()
+CadastroClienteServiceInterface --> CadastroClienteResource: return List<ClienteDTO>
+CadastroClienteResource --> User: return RestResponse<List<ClienteDTO>>
+
+User -> CadastroClienteResource: consultaCliente(idcliente)
+CadastroClienteResource -> CadastroClienteServiceInterface: consultaCliente(idcliente)
+CadastroClienteServiceInterface --> CadastroClienteResource: return ClienteDTO
+CadastroClienteResource --> User: return RestResponse<ClienteDTO>
+
+User -> CadastroClienteResource: createCliente(clienteDTO)
+CadastroClienteResource -> CadastroClienteServiceInterface: createCliente(clienteDTO)
+CadastroClienteServiceInterface --> CadastroClienteResource: return ClienteDTO
+CadastroClienteResource --> User: return RestResponse<ClienteDTO>
+
+User -> CadastroClienteResource: updateCliente(idcliente, clienteDTO)
+CadastroClienteResource -> CadastroClienteServiceInterface: updateAllCliente(idcliente, clienteDTO)
+CadastroClienteServiceInterface --> CadastroClienteResource: return ClienteDTO
+CadastroClienteResource --> User: return RestResponse<ClienteDTO>
+
+User -> CadastroClienteResource: updateParcialCliente(idcliente, clienteDTO)
+CadastroClienteResource -> CadastroClienteServiceInterface: updateParcialCliente(idcliente, clienteDTO)
+CadastroClienteServiceInterface --> CadastroClienteResource: return ClienteDTO
+CadastroClienteResource --> User: return RestResponse<ClienteDTO>
+@enduml

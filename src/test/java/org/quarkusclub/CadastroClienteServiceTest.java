@@ -39,8 +39,8 @@ class CadastroClienteServiceTest {
             "nomePlano",
             "indicacao",
             UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c"),
-            UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c")
-
+            UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c"),
+            true
     );
 
     ClienteEntity clienteEntity = clienteEntity = new ClienteEntity(
@@ -55,7 +55,8 @@ class CadastroClienteServiceTest {
             "nomePlano",
             "jose",
             UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c"),
-            UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c")
+            UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c"),
+            true
     );
 
     UUID id = UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c");

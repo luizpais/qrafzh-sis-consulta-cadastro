@@ -32,5 +32,7 @@ public class ClienteEntity extends PanacheEntityBase {
     private UUID idConvenio;
     @Column (name = "id_conveniado")
     private UUID idConveniado;
+    @Column(name = "status_conveniado")
+    private Boolean statusConveniado;
 
 }

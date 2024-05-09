@@ -36,7 +36,8 @@ public class ClienteMapper {
                 entity.getNomePlano(),
                 entity.getIndicacao(),
                 entity.getIdConvenio(),
-                entity.getIdConveniado()
+                entity.getIdConveniado(),
+                entity.getStatusConveniado()
         );
     }
 

@@ -50,6 +50,9 @@ public class CadastroClienteResource {
         if (cliente == null) {
             throw new ValidacaoDeDadosException("Cliente não informado", Response.Status.BAD_REQUEST);
         }
+        if (!"boa vida,vida longa".contains(cliente.nomePlano())) {
+            throw new ValidacaoDeDadosException("Plano não permitido", Response.Status.BAD_REQUEST);
+        }
 
         ClienteDTO newCliente = cadastroClienteService.createCliente(cliente);
         return RestResponse.status(Response.Status.CREATED, newCliente);

@@ -26,16 +26,17 @@ public class CadastroClienteService implements CadastroClienteServiceInterface {
     public ClienteDTO createCliente(ClienteDTO cliente) {
         ClienteStatusResponse conveniado = null;
         try {
-           conveniado = convenioRepository.getStatusConveniado(cliente.idConveniado());
+           conveniado = convenioRepository.getStatusConveniado(cliente.idConveniado(), cliente.nomePlano());
         } catch (Exception e) {
             throw new RuntimeException("Erro ao criar cliente.");
         }
-        if(conveniado == null || conveniado.status() == false){
+        if(conveniado == null || !conveniado.status()){
             throw new RuntimeException("Conveniado não está ativo ou não existe no convenio.");
         }
         ClienteEntity newCliente = ClienteMapper.mapDtoToEntity(cliente);
         newCliente.setIdConvenio(conveniado.idConvenio());
         newCliente.setIdConveniado(cliente.idConveniado());
+        newCliente.setStatusConveniado(true);
         cadastroClienteRepository.createCliente(newCliente);
         return ClienteMapper.mapEntityToDto(newCliente);
     }

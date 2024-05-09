@@ -14,5 +14,6 @@ public record ClienteDTO(
         String nomePlano,
         String indicacao,
         UUID idConvenio,
-        UUID idConveniado
+        UUID idConveniado,
+        boolean statusConveniado
 ) {}
