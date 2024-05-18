@@ -7,9 +7,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.quarkusclub.dtos.ClienteDTO;
+import org.quarkusclub.dtos.ClienteStatusResponse;
 import org.quarkusclub.models.ClienteEntity;
 import org.quarkusclub.models.exceptions.ClienteNaoCadastradoException;
 import org.quarkusclub.repositories.CadastroClienteRepository;
+import org.quarkusclub.repositories.ConveniosRepository;
 import org.quarkusclub.services.CadastroClienteService;
 
 
@@ -27,6 +29,10 @@ class CadastroClienteServiceTest {
 
     @Mock
     CadastroClienteRepository cadastroClienteRepository;
+
+    @Mock
+    private ConveniosRepository convenioRepository;
+
     ClienteDTO clienteDTO = new ClienteDTO(
             UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c"),
             "nome",
@@ -69,7 +75,7 @@ class CadastroClienteServiceTest {
     @Test
     void testCreateCliente() {
         when(clientes.add(any())).thenReturn(true);
-
+        when(convenioRepository.getStatusConveniado(any(), any())).thenReturn(new ClienteStatusResponse(UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c"), UUID.fromString("1ae0de65-9e0e-4476-9f8c-a41123f9ca3c"), true));
         ClienteDTO novoCliente = clienteDTO;
         ClienteDTO result = cadastroClienteService.createCliente(novoCliente);
         Assertions.assertTrue(CompareDtoAndEntity(result, clienteEntity));
